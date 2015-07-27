@@ -12,6 +12,7 @@
 #' # Load single label files
 #' # demographics_labels <- load_nhanes("demo", 2003, lab = TRUE)
 #' # med_cond_ques_labels <- load_nhanes("mcq", 2009, lab = TRUE)
+#' @import data.table
 #' @export
 load_nhanes <- function(f = "", yr, data_dir = "./data", lab = FALSE){
     l <- letters[(yr - 1999) / 2 + 1]
@@ -70,6 +71,8 @@ load_merge <- function(vec_of_files, yr){
 #' @param vec_of_files The character vector of files to be retrieved.  The "demo" file is ALWAYS included, and should NOT be specified.
 #' @param yr The year for which the file should be extracted.
 #' @return Returns a dataframe (a data.table) of all of the labels from each file in the character vector, including "demo".
+#' @importFrom magrittr %>%
+#' @import data.table
 #' @export
 load_labs_merge <- function(vec_of_files = NULL, yr){
     vec_of_files <- c("demo", vec_of_files)

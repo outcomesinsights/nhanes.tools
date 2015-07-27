@@ -57,6 +57,7 @@ setup_nhanes <- function(data_dir = ".", yr = 2011){
 #' @param dir_url A specific URL to be downloaded created by running setup_nhanes()
 #' @param select A character string to select a subset of filenames (e.g., ".dat", ."xpt")
 #' @return A dataframe of filenames and details (e.g., size, date, filename)
+#' @importFrom magrittr %>%
 #' @export
 .get_filenames <- function(dir_url, select = "") {
     f <-
@@ -101,14 +102,12 @@ get_nhanes_filenames <- function(setup, save_file_list = TRUE){
         saveRDS(f1, paste0(setup$target_dir, "download_file_specs.rds"))
     }
     filenames_data <-
-        f_data$filename %>%
-        paste0(setup$data_url, .)
+        paste0(setup$data_url, f_data$filename)
     filenames_death <-
         if(length(f_death) == 0) {
             NULL
         } else {
-            f_death$filename %>%
-            paste0(setup$death_url, .)
+            paste0(setup$death_url, f_death$filename)
         }
     filenames <-
         c(filenames_data, filenames_death)
@@ -133,10 +132,7 @@ get_nhanes_filenames <- function(setup, save_file_list = TRUE){
     .try_download(ftp_url, temp, mode = "wb", quiet = TRUE) # "curl" MUCH faster than "auto"
     f <- foreign::read.xport(temp) # extracts data file(s)
     l <- foreign::lookup.xport(temp) # extracts format information list (may have more than 1 item)
-    orig_name <-
-        names(l) %>%
-        tolower %>%
-        paste0(., ".rds")
+    orig_name <- paste0(tolower(names(l)), ".rds")
     orig_name_label <- gsub(".rds", "_label.rds", orig_name) # name formats file
     finalname <- paste0(setup$target_dir, orig_name) # full name with path included
     finalname_label <- paste0(setup$target_dir, orig_name_label) # full name with path included
