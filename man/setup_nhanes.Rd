@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_files.R
 \name{setup_nhanes}
 \alias{setup_nhanes}
-\title{Set up directories.}
+\title{Set up directories}
 \usage{
 setup_nhanes(data_dir = ".", yr = 2011)
 }

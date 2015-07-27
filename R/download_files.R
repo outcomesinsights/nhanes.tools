@@ -1,4 +1,4 @@
-#' Set up directories.
+#' Set up directories
 #'
 #' This function sets up the directories and subdirectories on your computer for subsequent downloading by other functions.
 #' This is the basic setup piece to facilitate the entire download and extraction process.  The returned object governs the rest of the process.
