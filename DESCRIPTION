@@ -1,0 +1,19 @@
+Package: nhanes.tools
+Type: Package
+Title: Easily Download and Combine NHANES Files for Analysis
+Version: 0.1
+Date: 2015-07-25
+Author: Mark Danese
+Maintainer: Mark Danese <mark@outins.com>
+Description: This package will download ALL of the NHANES files for a particular wave to a directory on your computer.
+    Files will be loaded into subdirectories for each 2-year wave.  Both data files and the appropriate mortality file will be downloaded.
+    There are also some functions for selecting files and combining them into a dataset for analysis.
+License: MIT
+LazyData: TRUE
+Imports:
+    foreign,
+    RCurl,
+    downloader,
+    magrittr,
+    readr,
+    data.table
