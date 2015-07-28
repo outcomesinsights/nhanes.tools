@@ -15,6 +15,61 @@ There are also some functions to load the data into your workspace and to merge 
 
 In the future, I will be adding an "nhanes" class to each file, as well as some attributes for the labels, and developing some tools to facilitate common analyses.
 
+## To Install and Use
+Install using devtools. Make sure Rcpp is installed.  (On Windows, you also need to install Rtools.)
+
+```R
+library(devtools)
+install_github(repo = "outcomesinsights/nhanes.tools")
+library(nhanes.tools)
+```
+Below is some sample code for downloading the entire NHANES data.  The "[1:7]" is optional, but shows how you might download just a few waves.
+
+```R
+waves <- seq(1999, 2011, 2) # for looping.  2013-2014 is not available yet 
+for(wave in waves[1:7]){
+    message("Starting wave: ", wave)
+    n <- setup_nhanes(data_dir = "./data/raw", yr = wave)
+    filenames <- get_nhanes_filenames(n)
+    for(file in filenames){
+        download_nhanes(file, n)
+    }
+    message("Finished wave: ", wave)
+}
+```
+
+Below is a way to do a single year using parallel downloading.  To do all waves in parallel, you need to use the foreach nested loop syntax.
+```R
+library(foreach)
+library(doMC)
+
+registerDoMC(cores = 4)
+foreach(file = filenames[1:5], .packages = c("foreign", "downloader"), .combine = rbind) %dopar% {
+    download_nhanes(file, n, console = FALSE)
+}
+```
+This shows how to download a subset of files.  You have to create the character vector "filenames" first, as shown above.
+```R
+for(file in filenames[110:117]){
+        download_nhanes(file, n)
+    }
+```
+
+This is some code to compare parallel vs. serial downloading using the first 24 files of a given year.
+```R
+# compare parallel vs serial downloading (serial ~ 1.75x parallel download time)
+library(rbenchmark)
+benchmark(
+    foreach(file = filenames[1:24], .packages = c("foreign") ) %dopar% {
+        download_nhanes(file, n)
+    }, 
+    foreach(file = filenames[1:24], .packages = c("foreign") ) %do% {
+        download_nhanes(file, n)
+    },
+    replications = 5
+)
+```
+
 ## Other Resources  
 There are some excellent resources for downloading and using NHANES data.  
 
