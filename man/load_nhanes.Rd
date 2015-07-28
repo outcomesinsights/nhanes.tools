@@ -22,11 +22,14 @@ Returns a dataframe (a data.table) with the requested file.  This function can b
 Load selected NHANES files for a specific year
 }
 \examples{
-# Load single data files
-# demographics <- load_nhanes("demo", 2003)
-# med_cond_ques <- load_nhanes("mcq", 2009)
+\dontrun{
+Load single data files
+demographics <- load_nhanes("demo", 2003)
+med_cond_ques <- load_nhanes("mcq", 2009)
+
 # Load single label files
-# demographics_labels <- load_nhanes("demo", 2003, lab = TRUE)
-# med_cond_ques_labels <- load_nhanes("mcq", 2009, lab = TRUE)
+demographics_labels <- load_nhanes("demo", 2003, lab = TRUE)
+med_cond_ques_labels <- load_nhanes("mcq", 2009, lab = TRUE)
+}
 }
 

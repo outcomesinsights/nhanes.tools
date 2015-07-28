@@ -17,4 +17,10 @@ Returns a dataframe (a data.table) of all of the labels from each file in the ch
 \description{
 Creates a simple data dictionary based on variable labels for each NHANES file
 }
+\examples{
+\dontrun{
+# Load label files listed in character vector
+full_labels <- load_labs_merge(listing, 2003)
+}
+}
 

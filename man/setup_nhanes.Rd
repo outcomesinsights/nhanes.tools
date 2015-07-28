@@ -19,33 +19,38 @@ This function sets up the directories and subdirectories on your computer for su
 This is the basic setup piece to facilitate the entire download and extraction process.  The returned object governs the rest of the process.
 }
 \examples{
+\dontrun{
 # Basic example of function
-# n <- setup_nhanes(data_dir = "./data", yr = 2011)
-# EXAMPLES NOT RUN
+n <- setup_nhanes(data_dir = "./data", yr = 2011)
+}
+
+\dontrun{
 # Example of entire workflow
 # Get entire NHANES directory and read into subdirectory as .rds objects
 # Note:  may work better doing this one or two waves at a time
 # Can use waves[1:7] in outer for loop to choose waves to load
 # Similarly can use filenames[1:20] in inner for loop to choose filenames to load
-# waves <- seq(1999, 2011, 2)
-# for(wave in waves){
-#     message("Starting wave: ", wave)
-#     n <- setup_nhanes(data_dir = "./data", yr = wave)
-#     filenames <- get_nhanes_filenames(n)
-#     for(file in filenames) {
-#         download_nhanes(file, n)
-#     }
-#     message("Finished wave: ", wave)
-# }
+waves <- seq(1999, 2011, 2)
+for(wave in waves){
+    message("Starting wave: ", wave)
+    n <- setup_nhanes(data_dir = "./data", yr = wave)
+    filenames <- get_nhanes_filenames(n)
+    for(file in filenames) {
+        download_nhanes(file, n)
+    }
+    message("Finished wave: ", wave)
+}
+
 # Example of parallel download process
 # Not quite twice as fast (on my computer)
 # Returns a list of completed files at the end.  Set console = FALSE in above functions.
 # Need to use foreach syntax for nested loops to redo above in completely parallel fashion
-# library(foreach)
-# library(doMC) # use library(doSNOW) on Windows
-# registerDoMC(cores = 4) # set number of cores for your computer
-# foreach(file = filenames, .packages = c("foreign", "downloader"), .combine = rbind) \%dopar\% {
-#     download_nhanes(file, n, console = FALSE)
-# }
+library(foreach)
+library(doMC) # use library(doSNOW) on Windows
+registerDoMC(cores = 4) # set number of cores for your computer
+foreach(file = filenames, .packages = c("foreign", "downloader"), .combine = rbind) \%dopar\% {
+    download_nhanes(file, n, console = FALSE)
+}
+}
 }
 

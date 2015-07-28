@@ -5,13 +5,15 @@
 #' @param data_dir = directory under which all of the nhanes subdirectories are stored (with no "/" at the end)
 #' @param lab = indicator of whether the label file should be included (if FALSE, then data file will be retrieved)
 #' @return Returns a dataframe (a data.table) with the requested file.  This function can be used as a stand-alone function to get a single file, or it can be used with the load_merge function to do multiple files
-#' @examples
-#' # Load single data files
-#' # demographics <- load_nhanes("demo", 2003)
-#' # med_cond_ques <- load_nhanes("mcq", 2009)
+#' @examples \dontrun{
+#' Load single data files
+#' demographics <- load_nhanes("demo", 2003)
+#' med_cond_ques <- load_nhanes("mcq", 2009)
+#'
 #' # Load single label files
-#' # demographics_labels <- load_nhanes("demo", 2003, lab = TRUE)
-#' # med_cond_ques_labels <- load_nhanes("mcq", 2009, lab = TRUE)
+#' demographics_labels <- load_nhanes("demo", 2003, lab = TRUE)
+#' med_cond_ques_labels <- load_nhanes("mcq", 2009, lab = TRUE)
+#' }
 #' @import data.table
 #' @export
 load_nhanes <- function(f = "", yr, data_dir = "./data", lab = FALSE){
@@ -47,12 +49,11 @@ load_nhanes <- function(f = "", yr, data_dir = "./data", lab = FALSE){
 #' @param vec_of_files A character vector of NHANES files (e.g., c("mcq", "biopro")) that identifies the stem of the desired file(s).  The demo file is ALWAYS included because it has the survey weights.  This vector should not include the final letter (e.g., _c) that indicates the wave (see yr).
 #' @param yr The year for which the file should be extracted.
 #' @return Returns a dataframe (which is also a data.table) with one column for each variable in each file requested.
-#' @examples
+#' @examples \dontrun{
 #' # Example:  load many files listed in character vector
-#' # listing <- c("mcq", "dex", "hcq", "hiq", "vix", "uc") # demo is assumed
-#' # full <- load_merge(listing, 2003)
-#' # Example:  load label files listed in character vector
-#' # full_labels <- load_labs_merge(listing, 2003)
+#' listing <- c("mcq", "dex", "hcq", "hiq", "vix", "uc") # demo is assumed
+#' full <- load_merge(listing, 2003)
+#' }
 #' @export
 load_merge <- function(vec_of_files, yr) {
     if(any(vec_of_files == "demo")) {
@@ -77,6 +78,10 @@ load_merge <- function(vec_of_files, yr) {
 #' @return Returns a dataframe (a data.table) of all of the labels from each file in the character vector, including "demo".
 #' @importFrom magrittr %>%
 #' @import data.table
+#' @examples \dontrun{
+#' # Load label files listed in character vector
+#' full_labels <- load_labs_merge(listing, 2003)
+#' }
 #' @export
 load_labs_merge <- function(vec_of_files = NULL, yr) {
     vec_of_files <- c("demo", vec_of_files)

@@ -6,35 +6,39 @@
 #' @param data_dir This is directory on computer in which subdirectories will be made for all nhanes files (can end in "/" on Mac but CANNOT on Windows).  This will be created if it doesn't exist.
 #' @param yr This is the first year of the NHANES wave of interest (always odd, starting in 1999 and ending in 2011)
 #' @return A list is returned with 4 items:  the url to download data from, the url to download death data from, the target directory into which subdirectories should be placed for the NHANES wave, and the years of the wave to be downloaded.
-#' @examples
+#' @examples \dontrun{
 #' # Basic example of function
-#' # n <- setup_nhanes(data_dir = "./data", yr = 2011)
-#' # EXAMPLES NOT RUN
+#' n <- setup_nhanes(data_dir = "./data", yr = 2011)
+#' }
+#'
+#' \dontrun{
 #' # Example of entire workflow
 #' # Get entire NHANES directory and read into subdirectory as .rds objects
 #' # Note:  may work better doing this one or two waves at a time
 #' # Can use waves[1:7] in outer for loop to choose waves to load
 #' # Similarly can use filenames[1:20] in inner for loop to choose filenames to load
-#' # waves <- seq(1999, 2011, 2)
-#' # for(wave in waves){
-#' #     message("Starting wave: ", wave)
-#' #     n <- setup_nhanes(data_dir = "./data", yr = wave)
-#' #     filenames <- get_nhanes_filenames(n)
-#' #     for(file in filenames) {
-#' #         download_nhanes(file, n)
-#' #     }
-#' #     message("Finished wave: ", wave)
-#' # }
+#' waves <- seq(1999, 2011, 2)
+#' for(wave in waves){
+#'     message("Starting wave: ", wave)
+#'     n <- setup_nhanes(data_dir = "./data", yr = wave)
+#'     filenames <- get_nhanes_filenames(n)
+#'     for(file in filenames) {
+#'         download_nhanes(file, n)
+#'     }
+#'     message("Finished wave: ", wave)
+#' }
+#'
 #' # Example of parallel download process
 #' # Not quite twice as fast (on my computer)
 #' # Returns a list of completed files at the end.  Set console = FALSE in above functions.
 #' # Need to use foreach syntax for nested loops to redo above in completely parallel fashion
-#' # library(foreach)
-#' # library(doMC) # use library(doSNOW) on Windows
-#' # registerDoMC(cores = 4) # set number of cores for your computer
-#' # foreach(file = filenames, .packages = c("foreign", "downloader"), .combine = rbind) %dopar% {
-#' #     download_nhanes(file, n, console = FALSE)
-#' # }
+#' library(foreach)
+#' library(doMC) # use library(doSNOW) on Windows
+#' registerDoMC(cores = 4) # set number of cores for your computer
+#' foreach(file = filenames, .packages = c("foreign", "downloader"), .combine = rbind) %dopar% {
+#'     download_nhanes(file, n, console = FALSE)
+#' }
+#' }
 #' @export
 setup_nhanes <- function(data_dir = ".", yr = 2011){
     if(!file.exists(data_dir)) stop("The data_dir you provided does not exist or the syntax is wrong.  On Unix/Mac you can use a slash at the end, but on Windows you cannot use the slash.")
@@ -89,10 +93,11 @@ setup_nhanes <- function(data_dir = ".", yr = 2011){
 #' @param setup The object (list) returned from the "setup_nhanes" function
 #' @param save_file_list Indicates whether the directory contents should be saved as a separate file (called "download_file_specs.rds")
 #' @return A character vector of ftp urls ("filenames") to download
-#' @examples
-#' # NOT RUN
-#' # assumes setup_nhanes has been run and its result assigned to object "n"
-#' # filenames <- get_nhanes_filenames(setup = n)
+#' @examples \dontrun{
+#' # Requires that setup_nhanes has been run and its result assigned to object "n"
+#' n <- setup_nhanes(data_dir = "./data", yr = 2011)
+#' filenames <- get_nhanes_filenames(setup = n)
+#' }
 #' @export
 get_nhanes_filenames <- function(setup, save_file_list = TRUE){
     f_data <-  .get_filenames(setup$data_url, select = ".xpt$")
@@ -234,24 +239,24 @@ get_nhanes_filenames <- function(setup, save_file_list = TRUE){
 #' @param ftp_url A specific URL to be downloaded via FTP and converted to an R dataframe
 #' @param setup The list object from running nhanes_setup with the details needed for naming and saving the files
 #' @param ... To pass options to the download function (which wraps download.file()).  Also can set console = FALSE to skip messages for download progress, which is useful when running parallel.  When FALSE, invisibly returns the status of the download, which is later reported by the foreach package after all downloads have completed.
-#' @examples
-#' # NOT RUN
+#' @examples \dontrun{
 #' # Example of basic download using a loop across all of the ftp download URLs.
 #' # In this example, n is the object created by the function setup_nhanes() and
 #' # filenames is created from teh function get_nhanes_filenames()
-#' #     for(file in filenames){
-#' #         download_nhanes(file, n)
-#' #     }
+#'     for(file in filenames){
+#'         download_nhanes(file, n)
+#'     }
 #' # Example of parallel download process
 #' # Not quite twice as fast (on my computer)
 #' # Returns a list of completed files at the end.  Set console = FALSE in above functions.
-#' # Need to use foreach syntax for nested loops to redo above in completely parallel fashion
-#' # library(foreach)
-#' # library(doMC) # use library(doSNOW) on Windows
-#' # registerDoMC(cores = 4) # set number of cores for your computer
-#' # foreach(file = filenames, .packages = c("foreign", "downloader"), .combine = rbind) %dopar% {
-#' #     download_nhanes(file, n, console = FALSE)
-#' # }
+#' # Need to use foreach syntax for nested loops to redo above in completely parallel fashion (not shown)
+#' library(foreach)
+#' library(doMC) # use library(doSNOW) on Windows
+#' registerDoMC(cores = 4) # set number of cores for your computer
+#' foreach(file = filenames, .packages = c("foreign", "downloader"), .combine = rbind) %dopar% {
+#'     download_nhanes(file, n, console = FALSE)
+#' }
+#' }
 #' @export
 download_nhanes <- function(ftp_url, setup, ...){
     if(grepl(".xpt$", ftp_url, ignore.case = TRUE)){

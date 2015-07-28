@@ -18,10 +18,10 @@ Returns a dataframe (which is also a data.table) with one column for each variab
 Takes vector of NHANES file names, loads them, and merges them all by SEQN.  Automatically loads demo, DO NOT include "demo" in the character vector.
 }
 \examples{
+\dontrun{
 # Example:  load many files listed in character vector
-# listing <- c("mcq", "dex", "hcq", "hiq", "vix", "uc") # demo is assumed
-# full <- load_merge(listing, 2003)
-# Example:  load label files listed in character vector
-# full_labels <- load_labs_merge(listing, 2003)
+listing <- c("mcq", "dex", "hcq", "hiq", "vix", "uc") # demo is assumed
+full <- load_merge(listing, 2003)
+}
 }
 

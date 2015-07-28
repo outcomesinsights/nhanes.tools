@@ -18,8 +18,10 @@ A character vector of ftp urls ("filenames") to download
 Gets all relevant NHANES filenames for a given year, both for the main data and for the mortality files
 }
 \examples{
-# NOT RUN
-# assumes setup_nhanes has been run and its result assigned to object "n"
-# filenames <- get_nhanes_filenames(setup = n)
+\dontrun{
+# Requires that setup_nhanes has been run and its result assigned to object "n"
+n <- setup_nhanes(data_dir = "./data", yr = 2011)
+filenames <- get_nhanes_filenames(setup = n)
+}
 }
 
