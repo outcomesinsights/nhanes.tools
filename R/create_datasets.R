@@ -54,7 +54,11 @@ load_nhanes <- function(f = "", yr, data_dir = "./data", lab = FALSE){
 #' # Example:  load label files listed in character vector
 #' # full_labels <- load_labs_merge(listing, 2003)
 #' @export
-load_merge <- function(vec_of_files, yr){
+load_merge <- function(vec_of_files, yr) {
+    if(any(vec_of_files == "demo")) {
+        vec_of_files <- vec_of_files[vec_of_files != "demo"]
+    }
+    vec_of_files <- unique(vec_of_files)
     dt <- load_nhanes("demo", yr)
     data.table::setkey(dt, SEQN)
     for(f in vec_of_files){
@@ -74,8 +78,9 @@ load_merge <- function(vec_of_files, yr){
 #' @importFrom magrittr %>%
 #' @import data.table
 #' @export
-load_labs_merge <- function(vec_of_files = NULL, yr){
+load_labs_merge <- function(vec_of_files = NULL, yr) {
     vec_of_files <- c("demo", vec_of_files)
+    vec_of_files <- unique(vec_of_files)
     dt <- lapply(vec_of_files, load_nhanes, yr = yr, lab = TRUE)
     dt1 <- data.table::rbindlist(dt) %>%
         .[, .(name, label)] %>%
