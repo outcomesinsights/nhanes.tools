@@ -1,7 +1,7 @@
 # nhanes.tools
 R package to make loading and using NHANES data easier
 
-This package includes functions to download NHANES files from 1999 and later, and store them as .rds files in a data directory on the user's computer.  There are also some simple utilities to merge selected files into useable dataframes using the data.table package.  
+This package includes functions to download [NHANES](http://www.cdc.gov/nchs/nhanes/about_nhanes.htm) files from 1999 and later, and store them as .rds files in a data directory on the user's computer.  There are also some simple utilities to merge selected files into useable dataframes using the data.table package.  
 
 The functions in this package will download NHANES data from the CDC's ftp server, including the mortality files.  It was tested on a Mac running Yosemite, R 3.1.3, and RStudio 0.99.447.  I also tested it on Windows 7 via VMware Fusion, R 3.2.1, and RStudio 0.99.467.  It seems to work on both platforms.  There is/was a challenge in properly identifying subdirectories into which the files would be written because Windows doesn't want a trailing slash (/), and Mac likes one.  But if you *do not use* the trailing slash on either platforms, all *should* be well.  
 
