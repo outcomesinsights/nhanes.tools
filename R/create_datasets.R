@@ -65,7 +65,7 @@ load_merge <- function(vec_of_files, yr, data_dir = "./data") {
     data.table::setkey(dt, SEQN)
     for(f in vec_of_files){
         y <- load_nhanes(f, yr, data_dir)
-        dt <- data.table::merge(dt, y, all.x = TRUE, by = "SEQN")
+        dt <- merge.data.table(dt, y, all.x = TRUE, by = "SEQN")
     }
     return(dt)
 }
