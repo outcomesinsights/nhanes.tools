@@ -7,7 +7,7 @@
 load_merge(vec_of_files, yr, data_dir = "./data")
 }
 \arguments{
-\item{vec_of_files}{A character vector of NHANES files (e.g., c("mcq", "biopro")) that identifies the stem of the desired file(s).  The demo file is ALWAYS included because it has the survey weights.  This vector should not include the final letter (e.g., _c) that indicates the wave (see yr).}
+\item{vec_of_files}{A character vector of NHANES files (e.g., c("mcq", "biopro")) that identifies the stem of the desired file(s).  The demo file is ALWAYS included because it has the survey weights.  This vector should NOT include the final letter (e.g., _c) that indicates the wave (see yr).}
 
 \item{yr}{The year for which the file should be extracted.}
 
@@ -17,13 +17,17 @@ load_merge(vec_of_files, yr, data_dir = "./data")
 Returns a dataframe (which is also a data.table) with one column for each variable in each file requested.
 }
 \description{
-Takes vector of NHANES file names, loads them, and merges them all by SEQN.  Automatically loads demo, DO NOT include "demo" in the character vector.
+Takes vector of NHANES file names, loads them, and merges them all by SEQN.  The function automatically loads the demo file, so you do not have to include "demo" in the character vector.  If you do include demo, or if you accidentally include the same filename twice, the function will only return a single copy of each file.
 }
 \examples{
+nhanes_directory <- paste0(system.file(package = "nhanes.tools"), "/extdata") # location of data in package extdata directory
+files_to_load <- c("mcq") # demo doesn't need to be included and will always be returned
+full <- load_merge(files_to_load, 2009, nhanes_directory)
+dim(full)
 \dontrun{
 # Example:  load many files listed in character vector
 listing <- c("mcq", "dex", "hcq", "hiq", "vix", "uc") # demo is assumed
-full <- load_merge(listing, 2003)
+full <- load_merge(listing, 2003, "./data")
 }
 }
 
