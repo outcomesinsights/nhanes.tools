@@ -61,26 +61,18 @@ setup_nhanes <- function(data_dir = ".", yr = 2011){
 #' @param dir_url A specific URL to be downloaded created by running setup_nhanes()
 #' @param select A character string to select a subset of filenames (e.g., ".dat", ."xpt")
 #' @return A dataframe of filenames and details (e.g., size, date, filename)
-#' @importFrom magrittr %>%
 #' @export
 .get_filenames <- function(dir_url, select = "") {
-    f <-
-        RCurl::getURL(
-            dir_url,
-            ftp.use.epsv = FALSE,
-            crlf = TRUE) %>%
-        strsplit(., "\r*\n") %>%
-        unlist %>%
-        grep(select, ., ignore.case = TRUE, value = TRUE)
+    f <- RCurl::getURL( dir_url, ftp.use.epsv = FALSE, crlf = TRUE)
+    f <- unlist(strsplit(f, "\r*\n"))
+    f <- grep(select, f, ignore.case = TRUE, value = TRUE)
     if(length(f) == 0) {
         f <- NULL
         return(f)
     } else {
-        f <-
-            strsplit(f, "\\s+") %>%
-            do.call(rbind, .) %>%
-            as.data.frame %>%
-            .[, 5:9]
+        f <- strsplit(f, "\\s+")
+        f <- as.data.frame(do.call(rbind, f))
+        f <- f[, 5:9]
         names(f) <- c("size", "month", "day", "year", "filename")
         return(f)
     }

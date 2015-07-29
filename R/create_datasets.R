@@ -36,7 +36,7 @@ load_nhanes <- function(f = "", yr, data_dir = "./data", lab = FALSE){
     }
     setDT(o)
     if(lab == TRUE) {
-        return(o[, .(name, label)])
+        return(o[, list(name, label)])
     } else {
         return(o)
     }
@@ -76,7 +76,6 @@ load_merge <- function(vec_of_files, yr) {
 #' @param vec_of_files The character vector of files to be retrieved.  The "demo" file is ALWAYS included, and should NOT be specified.
 #' @param yr The year for which the file should be extracted.
 #' @return Returns a dataframe (a data.table) of all of the labels from each file in the character vector, including "demo".
-#' @importFrom magrittr %>%
 #' @import data.table
 #' @examples \dontrun{
 #' # Load label files listed in character vector
@@ -87,9 +86,9 @@ load_labs_merge <- function(vec_of_files = NULL, yr) {
     vec_of_files <- c("demo", vec_of_files)
     vec_of_files <- unique(vec_of_files)
     dt <- lapply(vec_of_files, load_nhanes, yr = yr, lab = TRUE)
-    dt1 <- data.table::rbindlist(dt) %>%
-        .[, .(name, label)] %>%
-        data.table::setkey(., name) %>%
-        .[J(unique(name)), mult = "first"] # get rid of multiple SEQN rows
+    dt1 <- data.table::rbindlist(dt)
+    dt1 <- dt1[, list(name, label)]
+    data.table::setkey(dt1, name)
+    dt1 <- dt1[J(unique(name)), mult = "first"] # get rid of multiple SEQN rows
     return(dt1)
 }
