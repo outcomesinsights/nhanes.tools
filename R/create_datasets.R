@@ -61,10 +61,10 @@ load_merge <- function(vec_of_files, yr, data_dir = "./data") {
         vec_of_files <- vec_of_files[vec_of_files != "demo"]
     }
     vec_of_files <- unique(vec_of_files)
-    dt <- load_nhanes("demo", yr)
+    dt <- load_nhanes("demo", yr, data_dir)
     data.table::setkey(dt, SEQN)
     for(f in vec_of_files){
-        y <- load_nhanes(f, yr)
+        y <- load_nhanes(f, yr, data_dir)
         dt <- data.table::merge(dt, y, all.x = TRUE, by = "SEQN")
     }
     return(dt)
@@ -87,7 +87,7 @@ load_merge <- function(vec_of_files, yr, data_dir = "./data") {
 load_labs_merge <- function(vec_of_files = NULL, yr, data_dir = "./data") {
     vec_of_files <- c("demo", vec_of_files)
     vec_of_files <- unique(vec_of_files)
-    dt <- lapply(vec_of_files, load_nhanes, yr = yr, lab = TRUE)
+    dt <- lapply(vec_of_files, load_nhanes, yr = yr, lab = TRUE, data_dir = data_dir)
     dt1 <- data.table::rbindlist(dt)
     dt1 <- dt1[, list(name, label)]
     data.table::setkey(dt1, name)
