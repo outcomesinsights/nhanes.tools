@@ -11,7 +11,7 @@ load_nhanes(f = "", yr, data_dir = "./data", lab = FALSE)
 
 \item{yr}{= first year of wave,}
 
-\item{data_dir}{= directory under which all of the nhanes subdirectories are stored (with no "/" at the end)}
+\item{data_dir}{= The directory in which all of your NHANES subdirectories (one for each year) reside.  Default is the project "data" subdirectory (i.e., "./data") but if your data are elsewhere, you must specify the directory.  Keep in mind that this will be a directory that contains all of your NHANES subdirectories.  It is NOT the subdirectory for a specific year.  Do not use a slash (/) at the end.}
 
 \item{lab}{= indicator of whether the label file should be included (if FALSE, then data file will be retrieved)}
 }

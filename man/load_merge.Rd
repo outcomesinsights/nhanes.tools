@@ -4,12 +4,14 @@
 \alias{load_merge}
 \title{Load and merge NHANES files}
 \usage{
-load_merge(vec_of_files, yr)
+load_merge(vec_of_files, yr, data_dir = "./data")
 }
 \arguments{
 \item{vec_of_files}{A character vector of NHANES files (e.g., c("mcq", "biopro")) that identifies the stem of the desired file(s).  The demo file is ALWAYS included because it has the survey weights.  This vector should not include the final letter (e.g., _c) that indicates the wave (see yr).}
 
 \item{yr}{The year for which the file should be extracted.}
+
+\item{data_dir}{The directory in which all of your NHANES subdirectories (one for each year) reside.  Default is the project "data" subdirectory (i.e., "./data") but if your data are elsewhere, you must specify the directory.  Keep in mind that this will be a directory that contains all of your NHANES subdirectories.  It is NOT the subdirectory for a specific year.  Do not use a slash (/) at the end.}
 }
 \value{
 Returns a dataframe (which is also a data.table) with one column for each variable in each file requested.

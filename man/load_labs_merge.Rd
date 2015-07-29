@@ -4,12 +4,14 @@
 \alias{load_labs_merge}
 \title{Create data dictionary}
 \usage{
-load_labs_merge(vec_of_files = NULL, yr)
+load_labs_merge(vec_of_files = NULL, yr, data_dir = "./data")
 }
 \arguments{
 \item{vec_of_files}{The character vector of files to be retrieved.  The "demo" file is ALWAYS included, and should NOT be specified.}
 
 \item{yr}{The year for which the file should be extracted.}
+
+\item{data_dir}{The directory in which all of your NHANES subdirectories (one for each year) reside.  Default is the project "data" subdirectory (i.e., "./data") but if your data are elsewhere, you must specify the directory.  Keep in mind that this will be a directory that contains all of your NHANES subdirectories.  It is NOT the subdirectory for a specific year.  Do not use a slash (/) at the end.}
 }
 \value{
 Returns a dataframe (a data.table) of all of the labels from each file in the character vector, including "demo".
