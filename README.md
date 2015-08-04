@@ -38,7 +38,7 @@ for(wave in waves[1:7]){
 }
 ```
 
-Below is a way to do a single year using parallel downloading.  To do all waves in parallel, you need to use the foreach nested loop syntax.
+Below is a way to do a single year using parallel downloading.  To do all waves in parallel, you need to use the foreach nested loop syntax.  The code below uses "filenames[1:5]" which will download the first 5 files.  Just use "filenames" to download all files in the wave.
 ```R
 library(foreach)
 library(doMC)
@@ -48,7 +48,7 @@ foreach(file = filenames[1:5], .packages = c("foreign", "downloader"), .combine 
     download_nhanes(file, n, console = FALSE)
 }
 ```
-This shows how to download a subset of files.  You have to create the character vector "filenames" first, as shown above.
+This shows how to download a subset of files.  You have to create the character vector "filenames" first, as shown above.  For 1999, this will download the last 7 files, plus the mortality file.
 ```R
 for(file in filenames[110:117]){
         download_nhanes(file, n)
