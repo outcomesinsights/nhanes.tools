@@ -119,14 +119,14 @@ get_nhanes_filenames <- function(setup, save_file_list = TRUE){
 #' @param setup The list object from running nhanes_setup with the details needed for naming and saving the files
 #' @param console Set to FALSE to skip messages for download progress.  Useful when running parallel.  When FALSE, invisibly returns the status of the download, which is reported by the foreach package
 #' @export
-.read_save_xpt <- function(ftp_url, setup, console = TRUE) {
+.read_save_xpt <- function(ftp_url, setup, console = TRUE, ...) {
     op <- options(stringsAsFactors = FALSE)
     on.exit(options(op))
     if(console) {
         message("Loading wave = ", setup$years, ", file = ", basename(ftp_url), appendLF = FALSE)
     }
     temp <- tempfile()
-    .try_download(ftp_url, temp, mode = "wb", quiet = TRUE) # "curl" MUCH faster than "auto"
+    .try_download(ftp_url, temp, mode = "wb", quiet = TRUE, ...) # "curl" MUCH faster than "auto"
     f <- foreign::read.xport(temp) # extracts data file(s)
     l <- foreign::lookup.xport(temp) # extracts format information list (may have more than 1 item)
     orig_name <- paste0(tolower(names(l)), ".rds")
@@ -158,7 +158,7 @@ get_nhanes_filenames <- function(setup, save_file_list = TRUE){
 #' @param setup The list object from running nhanes_setup with the details needed for naming and saving the files
 #' @param console Set to FALSE to skip messages for download progress.  Useful when running parallel.  When FALSE, invisibly returns the status of the download, which is later reported by the foreach package after all downloads have completed
 #' @export
-.read_save_fwf <- function(ftp_url, setup, console = TRUE){
+.read_save_fwf <- function(ftp_url, setup, console = TRUE, ...){
     op <- options(stringsAsFactors = FALSE)
     on.exit(options(op))
     if(console){
@@ -166,7 +166,7 @@ get_nhanes_filenames <- function(setup, save_file_list = TRUE){
     }
     s <- .create_death_specs()
     temp <- tempfile()
-    .try_download(ftp_url, temp, quiet = TRUE)
+    .try_download(ftp_url, temp, quiet = TRUE, ...)
     dat <- readr::read_fwf(temp, readr::fwf_positions(s$fwf$start, s$fwf$end, col_names = s$fwf$var), col_types = paste0(s$fwf$type, collapse = ""), na = ".")
     filename_data <- paste0(setup$target_dir, "death.rds")
     filename_labs <- paste0(setup$target_dir, "death_label.rds")
