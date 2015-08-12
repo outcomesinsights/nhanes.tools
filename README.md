@@ -23,7 +23,7 @@ library(devtools)
 install_github(repo = "outcomesinsights/nhanes.tools")
 library(nhanes.tools)
 ```
-Below is some sample code for downloading the entire NHANES data.  The "[1:7]" is optional, but shows how you might download just a few waves (for example [6:7] will give the last 2 waves).  Note that this will write all of the .rds files to a subdirectory of the data directory specified in the `setup_nhanes()` function.  So, make sure this is where you want the files to be saved.  In the example below, it is writing to the project directory ("."), in the subdirectory for data called "raw".  
+Below is some sample code for downloading the entire NHANES data.  The "[1:7]" is optional, but shows how you might download just a few waves (for example [6:7] will give the last 2 waves).  Note that this will write all of the .rds files to a subdirectory of the data directory specified in the `setup_nhanes()` function.  So, make sure this is where you want the files to be saved.  In the example below, it is writing to the project data directory ("./data/"), in the subdirectory called "raw".  
 
 ```R
 waves <- seq(1999, 2011, 2) # for looping.  2013-2014 is not available yet 
