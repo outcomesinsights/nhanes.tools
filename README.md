@@ -16,14 +16,14 @@ There are also some functions to load the data into your workspace and to merge 
 In the future, I will be adding an "nhanes" class to each file, as well as some attributes for the labels, and developing some tools to facilitate common analyses.
 
 ## To Install and Use
-Install using devtools. Make sure Rcpp is installed.  (On Windows, you also need to install Rtools.)
+Install using devtools. Make sure Rcpp is installed for devtools to work properly.  (On Windows, you also need to install Rtools.)
 
 ```R
 library(devtools)
 install_github(repo = "outcomesinsights/nhanes.tools")
 library(nhanes.tools)
 ```
-Below is some sample code for downloading the entire NHANES data.  The "[1:7]" is optional, but shows how you might download just a few waves.
+Below is some sample code for downloading the entire NHANES data.  The "[1:7]" is optional, but shows how you might download just a few waves (for example [6:7] will give the last 2 waves).  Note that this will write all of the .rds files to a subdirectory of the data directory specified in the `setup_nhanes()` function.  So, make sure this is where you want the files to be saved.  In the example below, it is writing to the project directory ("."), in the subdirectory for data called "raw".  
 
 ```R
 waves <- seq(1999, 2011, 2) # for looping.  2013-2014 is not available yet 
