@@ -71,6 +71,9 @@ benchmark(
     replications = 5
 )
 ```
+## Analyses
+
+We have a [blog post](http://outins.com/2015/07/10/nhanes-data-in-r/) that goes through some example analyses that may be helpful to some people.
 
 ## Other Resources  
 There are some excellent resources for downloading and using NHANES data.  
