@@ -76,7 +76,7 @@ We have a [blog post](http://outins.com/2015/07/10/nhanes-data-in-r/) that goes 
 ## Issues
 We learned that selected files (e.g.,  medication [RX]) have multiple records per person.  So, the `load_merge()` function will not work correctly.  We will fix this as soon as we get a chance.
 
-Also note that the FTP server files appear to be a subset of the files available on the NHANES website.  We plan to change to downloading from the website instead of the ftp site.  There seem to be only a handful of files that are not on the FTP server (perhaps 20 out of over 850).
+Also note that the FTP server files appear to be a subset of the files available on the NHANES website.  We plan to change to downloading from the website instead of the ftp site.  There seem to be only a handful of files that are not on the FTP server (perhaps 20 out of over 850).  This is a [link](https://gist.github.com/markdanese/112c3ccb0f98bd640d24) to code that generates the necessary dataframe with links.
 
 ## Other Resources  
 There are some excellent resources for downloading and using NHANES data.  
