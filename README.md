@@ -11,8 +11,6 @@ Single waves take 5-10 minutes each on my computer to download and resave as .rd
 
 The process also saves a file that lists all the files in the FTP directory.  This listing, and the download process itself, only works on .xpt files and a fixed-width file (.dat) for the mortality data.  There are some .txt files in the ftp directories that are ignored.  
 
-Also note that the FTP server files appear to be a subset of the files available on the website.  We are looking at downloading from the website instead, but that may take some time.  There seem to be only a handful of files that are not on the FTP server (perhaps 20 out of over 850).
-
 There are also some functions to load the data into your workspace and to merge multiple files for an analysis into a single file (merged by SEQN).  Note that the utilities to merge the files use [data.table](https://github.com/Rdatatable/data.table), but the process could be done with base::merge or [dplyr](https://github.com/hadley/dplyr).  We use data.table for most everything, because it is really fast and has nice utilities like `rbindlist()` for combining datasets (a fast, simple version of `do.call(rbind, list))`.
 
 In the future, I will be adding an "nhanes" class to each file, as well as some attributes for the labels, and developing some tools to facilitate common analyses.
@@ -73,7 +71,12 @@ benchmark(
 ```
 ## Analyses
 
-We have a [blog post](http://outins.com/2015/07/10/nhanes-data-in-r/) that goes through some example analyses that may be helpful to some people.
+We have a [blog post](http://outins.com/2015/07/10/nhanes-data-in-r/) that goes through some example analyses that may be helpful to some people.  
+
+## Issues
+We learned that selected files (e.g.,  medication [RX]) have multiple records per person.  So, the `load_merge()` function will not work correctly.  We will fix this as soon as we get a chance.
+
+Also note that the FTP server files appear to be a subset of the files available on the NHANES website.  We plan to change to downloading from the website instead of the ftp site.  There seem to be only a handful of files that are not on the FTP server (perhaps 20 out of over 850).
 
 ## Other Resources  
 There are some excellent resources for downloading and using NHANES data.  
