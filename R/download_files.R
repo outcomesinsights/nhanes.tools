@@ -3,7 +3,7 @@
 #' This function sets up the directories and subdirectories on your computer for subsequent downloading by other functions.
 #' This is the basic setup piece to facilitate the entire download and extraction process.  The returned object governs the rest of the process.
 #'
-#' @param data_dir This is directory on computer in which subdirectories will be made for all nhanes files (can end in "/" on Mac but CANNOT on Windows).  This will be created if it doesn't exist.
+#' @param data_dir This is directory on computer in which subdirectories will be made for all nhanes files (can end in "/" on Mac but CANNOT on Windows).  This will be created as a temporary directory if it doesn't exist.  Use data_dir = "." to use the current working directory.
 #' @param yr This is the first year of the NHANES wave of interest (always odd, starting in 1999 and ending in 2011)
 #' @return A list is returned with 4 items:  the url to download data from, the url to download death data from, the target directory into which subdirectories should be placed for the NHANES wave, and the years of the wave to be downloaded.
 #' @examples \dontrun{
@@ -40,7 +40,10 @@
 #' }
 #' }
 #' @export
-setup_nhanes <- function(data_dir = ".", yr = 2011){
+setup_nhanes <- function(data_dir = NULL, yr = 2011){
+    if(is.null(data_dir)) {
+        data_dir <- tempdir()
+    }
     if(!file.exists(data_dir)) stop("The data_dir you provided does not exist or the syntax is wrong.  On Unix/Mac you can use a slash at the end, but on Windows you cannot use the slash.")
     data_dir <- normalizePath(path.expand(data_dir), winslash = "/")
     if(!yr %in% seq(1999, 2011, 2)) stop("first year must be an odd number from 1999 to 2011")
