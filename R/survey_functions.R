@@ -42,6 +42,6 @@ output_table <- function(t) {
 #' @import survey
 #' @export
 nhanes_design <- function(df, wt = "WTINT2YR") {
-    x <- svydesign(id = ~ SDMVPSU, strata = ~ SDMVSTRA, nest = TRUE, weight = as.formula(~ wt), data = df)
+    x <- svydesign(id = ~ SDMVPSU, strata = ~ SDMVSTRA, nest = TRUE, weight = formula(paste0("~", wt)), data = df)
     return(x)
 }
