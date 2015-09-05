@@ -4,10 +4,10 @@
 \alias{setup_nhanes}
 \title{Set up directories}
 \usage{
-setup_nhanes(data_dir = ".", yr = 2011)
+setup_nhanes(data_dir = NULL, yr = 2011)
 }
 \arguments{
-\item{data_dir}{This is directory on computer in which subdirectories will be made for all nhanes files (can end in "/" on Mac but CANNOT on Windows).  This will be created if it doesn't exist.}
+\item{data_dir}{This is directory on computer in which subdirectories will be made for all nhanes files (can end in "/" on Mac but CANNOT on Windows).  This will be created as a temporary directory if it doesn't exist.  Use data_dir = "." to use the current working directory.}
 
 \item{yr}{This is the first year of the NHANES wave of interest (always odd, starting in 1999 and ending in 2011)}
 }
