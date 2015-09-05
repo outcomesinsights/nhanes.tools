@@ -4,10 +4,12 @@
 \alias{output_table}
 \title{Print mean, SE, and CI nicely from survey functions}
 \usage{
-output_table(t)
+output_table(t, dig = 0)
 }
 \arguments{
-\item{t}{a survey object from a svytotal, svymean, or svyby function}
+\item{t}{A survey object from a svytotal, svymean, or svyby function}
+
+\item{dig}{The number of digits to the right of the decimal (using formatC)}
 }
 \value{
 Returns a dataframe with character-formatted results summarizing the mean, standard error, and confidence interval
