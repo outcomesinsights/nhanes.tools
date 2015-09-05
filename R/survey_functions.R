@@ -2,7 +2,8 @@
 #'
 #' Takes a survey object and prints out the results in a nicer format for a report.
 #'
-#' @param t a survey object from a svytotal, svymean, or svyby function
+#' @param t A survey object from a svytotal, svymean, or svyby function
+#' @param dig The number of digits to the right of the decimal (using formatC)
 #' @return Returns a dataframe with character-formatted results summarizing the mean, standard error, and confidence interval
 #' @examples \dontrun{
 #' # nested syntax of base R:
@@ -16,14 +17,14 @@
 #' }
 #' @import survey
 #' @export
-output_table <- function(t) {
+output_table <- function(t, dig = 0) {
     x <- cbind(
             coef(t),
             SE(t),
             confint(t)
         )
     x <- as.data.frame(
-            format(x, big.mark = ",", digits = 4)
+            formatC(x, format = "f", big.mark = ",", digits = dig)
         )
     names(x) <- c("Total", "SE", "2.5%", "97.5%")
     return(x)
