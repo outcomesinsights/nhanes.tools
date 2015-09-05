@@ -15,4 +15,5 @@ Imports:
     RCurl,
     downloader,
     readr,
-    data.table
+    data.table,
+    survey
