@@ -49,7 +49,7 @@ load_nhanes <- function(f = "", yr, data_dir = "./data", lab = FALSE){
 #' @param vec_of_files A character vector of NHANES files (e.g., c("mcq", "biopro")) that identifies the stem of the desired file(s).  The demo file is ALWAYS included because it has the survey weights.  This vector should NOT include the final letter (e.g., _c) that indicates the wave (see yr).
 #' @param yr The year for which the file should be extracted.
 #' @param data_dir The directory in which all of your NHANES subdirectories (one for each year) reside.  Default is the project "data" subdirectory (i.e., "./data") but if your data are elsewhere, you must specify the directory.  Keep in mind that this will be a directory that contains all of your NHANES subdirectories.  It is NOT the subdirectory for a specific year.  Do not use a slash (/) at the end.
-#' @return Returns a dataframe (which is also a data.table) with one column for each variable in each file requested.
+#' @return Returns a dataframe (which is also a data.table) with one column for each variable in each file requested.  Note that in some cases, there are multiple records per person (SEQN) in an NHANES file.  In this case, a list is returned with each item in the list being a dataframe with multiple records per person.  The prescription drug file (RXQ_RX) is an example.  All  files with one record per person are merged as usual, and returned as the first dataframe in the list.
 #' @examples
 #' nhanes_directory <- paste0(system.file(package = "nhanes.tools"), "/extdata") # location of data in package extdata directory
 #' files_to_load <- c("mcq") # demo doesn't need to be included and will always be returned
@@ -62,15 +62,26 @@ load_nhanes <- function(f = "", yr, data_dir = "./data", lab = FALSE){
 #' }
 #' @export
 load_merge <- function(vec_of_files = "demo", yr, data_dir = "./data") {
-    if(any(vec_of_files == "demo")) {
-        vec_of_files <- vec_of_files[vec_of_files != "demo"]
+    if(any(vec_of_files == "demo" | vec_of_files == "")) {
+        vec_of_files <- vec_of_files[vec_of_files != "demo" & vec_of_files != ""]
     }
     vec_of_files <- unique(vec_of_files)
     dt <- load_nhanes("demo", yr, data_dir)
     data.table::setkey(dt, SEQN)
+    i <- 0
+    dt_list <- vector("list", 1)
     for(f in vec_of_files){
         y <- load_nhanes(f, yr, data_dir)
-        dt <- merge(dt, y, all.x = TRUE, by = "SEQN")
+        setkey(y, "SEQN")
+        if(data.table::uniqueN(y) == nrow(y)){
+            dt <- merge(dt, y, all.x = TRUE, by = "SEQN")
+        } else {
+            i <- i + 1
+            dt_list[[i]] <- y
+        }
+    }
+    if(!all(unlist(lapply(dt_list, is.null)))) {
+        dt <- list(dt, dt_list)
     }
     return(dt)
 }
