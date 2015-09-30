@@ -61,7 +61,7 @@ load_nhanes <- function(f = "", yr, data_dir = "./data", lab = FALSE){
 #' full <- load_merge(listing, 2003, "./data")
 #' }
 #' @export
-load_merge <- function(vec_of_files, yr, data_dir = "./data") {
+load_merge <- function(vec_of_files = "demo", yr, data_dir = "./data") {
     if(any(vec_of_files == "demo")) {
         vec_of_files <- vec_of_files[vec_of_files != "demo"]
     }
