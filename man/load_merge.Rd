@@ -4,7 +4,7 @@
 \alias{load_merge}
 \title{Load and merge NHANES files}
 \usage{
-load_merge(vec_of_files, yr, data_dir = "./data")
+load_merge(vec_of_files = "demo", yr, data_dir = "./data")
 }
 \arguments{
 \item{vec_of_files}{A character vector of NHANES files (e.g., c("mcq", "biopro")) that identifies the stem of the desired file(s).  The demo file is ALWAYS included because it has the survey weights.  This vector should NOT include the final letter (e.g., _c) that indicates the wave (see yr).}
@@ -14,7 +14,7 @@ load_merge(vec_of_files, yr, data_dir = "./data")
 \item{data_dir}{The directory in which all of your NHANES subdirectories (one for each year) reside.  Default is the project "data" subdirectory (i.e., "./data") but if your data are elsewhere, you must specify the directory.  Keep in mind that this will be a directory that contains all of your NHANES subdirectories.  It is NOT the subdirectory for a specific year.  Do not use a slash (/) at the end.}
 }
 \value{
-Returns a dataframe (which is also a data.table) with one column for each variable in each file requested.
+Returns a dataframe (which is also a data.table) with one column for each variable in each file requested.  Note that in some cases, there are multiple records per person (SEQN) in an NHANES file.  In this case, a list is returned with each item in the list being a dataframe with multiple records per person.  The prescription drug file (RXQ_RX) is an example.  All  files with one record per person are merged as usual, and returned as the first dataframe in the list.
 }
 \description{
 Takes vector of NHANES file names, loads them, and merges them all by SEQN.  The function automatically loads the demo file, so you do not have to include "demo" in the character vector.  If you do include demo, or if you accidentally include the same filename twice, the function will only return a single copy of each file.
