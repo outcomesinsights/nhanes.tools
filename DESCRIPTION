@@ -16,4 +16,6 @@ Imports:
     downloader,
     readr,
     data.table,
-    survey
+    survey,
+    rvest,
+    xml2

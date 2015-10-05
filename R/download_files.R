@@ -311,3 +311,45 @@ download_nhanes <- function(ftp_url, setup, ...){
             )
     )
 }
+
+#' Generate a list of all downloadable NHANES files
+#'
+#' Generates a list of downloadable NHANES data files from the CDC website, as well as the meta-data about the files.  This is primarily used to populate the internal table in the package.  However, this function is accessible so you can compare the most current version to the internal list within the package to see if anything has changed.  Note that changes to the NHANES website might make this function fail.
+#'
+#' @return A dataframe with a list of all of the available NHANES files.
+#' @export
+get_nhanes_listing <- function(){
+    nhanes_url <- "http://wwwn.cdc.gov/Nchs/Nhanes/Search/DataPage.aspx"
+    tbl <- xml2::read_html(nhanes_url)
+
+    table_text <- rvest::html_table(tbl)
+    table_text <- data.frame(table_text, stringsAsFactors = FALSE) # just gets table, not hyperlinks in table
+    names(table_text) <- gsub("\\.", "_", names(table_text))
+    names(table_text) <- tolower(names(table_text))
+    table_text <- table_text[table_text$data_file != "RDC Only",]
+    table_text$key <- gsub(" Doc", "", table_text$doc_file)
+    table_text$key <- tolower(table_text$key)
+
+    cell_urls <- rvest::html_nodes(tbl, "#PageContents_GridView1 a")
+    cell_urls <- rvest::html_attr(cell_urls, "href")
+
+    documentation <- cell_urls[grepl("htm$", cell_urls)]
+    documentation <- data.frame(doc_link = documentation, stringsAsFactors = FALSE)
+    documentation$key <- gsub(".htm", "", basename(documentation$doc_link))
+    documentation$key <- tolower(documentation$key)
+
+    download_url <- cell_urls[grepl("(XPT|xpt)$", cell_urls)]
+    download_url <- data.frame(data_link = download_url, stringsAsFactors = FALSE)
+    download_url$key <- gsub("(.XPT|.xpt)", "", basename(download_url$data_link))
+    download_url$key <- tolower(download_url$key)
+
+    url_list <- merge(download_url, documentation, all.x = TRUE)
+    nhanes_file <- merge(table_text, url_list)
+
+    nhanes_file$name <- gsub("_[a-z]{1}$", "", nhanes_file$key)
+    year_list <- strsplit(nhanes_file$years, "-")
+    nhanes_file$start_yr <- do.call(rbind, lapply(year_list, function(x) x[[1]]))
+    nhanes_file$end_yr <- do.call(rbind, lapply(year_list, function(x) x[[2]]))
+    nhanes_file$wave <- ifelse(as.numeric(nhanes_file$end_yr) - as.numeric(nhanes_file$start_yr) > 1, "multiple", nhanes_file$start_yr)
+    return(nhanes_file)
+}
