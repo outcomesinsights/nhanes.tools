@@ -95,7 +95,7 @@ setup_nhanes <- function(data_dir = NULL, yr = 2011){
 #' }
 #' @export
 get_nhanes_filenames <- function(setup, save_file_list = TRUE){
-    data("sysdata.rda", envir = environment())
+    data(sysdata, envir = environment())
     filenames_data <- nhanes_files[nhanes_files$wave == as.character(setup$wave), "data_link"]
     f_death <- .get_filenames(setup$death_url, select = paste0("NHANES_", setup$years))
 #     f_data <-  .get_filenames(setup$data_url, select = ".xpt$")
