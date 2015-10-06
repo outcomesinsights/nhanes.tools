@@ -51,9 +51,9 @@ foreach(file = filenames[1:5], .packages = c("foreign", "downloader"), .combine 
     download_nhanes(file, n, console = FALSE)
 }
 ```
-This shows how to download a subset of files.  You have to create the character vector "filenames" first, as shown above.  For 1999, this will download the last 7 files, plus the mortality file (8 files total).
+This shows how to download a subset of files.  You have to create the character vector "filenames" first, as shown above.  For 1999, this will download the last 5 files, plus the mortality file (6 files total).
 ```R
-for(file in filenames[102:109]){
+for(file in filenames[110:115]){
         download_nhanes(file, n)
     }
 ```
@@ -81,7 +81,7 @@ We learned that selected files (e.g.,  medication [RX]) have multiple records pe
 
 Also note that the FTP server files appear to be slightly different from the files available on the NHANES website.  We just changed to downloading from the HTTP site instead.  This is a [link](https://gist.github.com/markdanese/112c3ccb0f98bd640d24) to code that generates the necessary dataframe with links, in case you are interested.
 
-Right now there are a few files that span multiple waves.  These are generally for drugs and dietary files, plus some studies done with stored serum.  We will shortly make it a default to download these with every wave.
+Right now there are a few files that span multiple waves.  These are generally for drugs and dietary files, plus some studies done with stored serum.  These are downloaded with every wave.
 
 ## Other Resources  
 There are some excellent resources for downloading and using NHANES data.  
