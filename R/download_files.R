@@ -95,9 +95,9 @@ setup_nhanes <- function(data_dir = NULL, yr = 2011){
 #' @export
 get_nhanes_filenames <- function(setup, save_file_list = TRUE){
     filenames_data <-
-        rbind(
-            nhanes_files[nhanes_files$wave == as.character(setup$wave), "data_link"],
-            nhanes_files[nhanes_files$wave == "multiple", "data_link"]
+        c(
+         nhanes_files[nhanes_files$wave == as.character(setup$wave), "data_link"],
+         nhanes_files[nhanes_files$wave == "multiple", "data_link"]
         )
     f_death <- .get_filenames(setup$death_url, select = paste0("NHANES_", setup$years))
     filenames_death <-
