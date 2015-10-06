@@ -354,3 +354,13 @@ get_nhanes_listing <- function(){
     nhanes_file$wave <- ifelse(as.numeric(nhanes_file$end_yr) - as.numeric(nhanes_file$start_yr) > 1, "multiple", nhanes_file$start_yr)
     return(nhanes_file)
 }
+
+#' Print NHANES file listing
+#'
+#' Provides access to the internal data listing all NHANES files
+#'
+#' @return A data frame with the list of files that can be accessed through the NHANES website.  Should not generally be used.  Present for debugging purposes and transparency.
+#' @export
+find_data <- function(){
+    nhanes_files
+}
