@@ -47,7 +47,6 @@ setup_nhanes <- function(data_dir = NULL, yr = 2011){
     if(!file.exists(data_dir)) stop("The data_dir you provided does not exist or the syntax is wrong.  On Unix/Mac you can use a slash at the end, but on Windows you cannot use the slash.")
     data_dir <- normalizePath(path.expand(data_dir), winslash = "/")
     if(!yr %in% seq(1999, 2011, 2)) stop("first year must be an odd number from 1999 to 2011")
-#    data_url <- paste0("ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/nhanes/", yr, "-", yr + 1, "/") # ftp location of data files
     death_url <- paste0("ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/datalinkage/linked_mortality/") # ftp location of death files
     diryears <- paste(yr, yr + 1, sep = "_")
     target_dir <- paste0(data_dir, "/nhanes_", diryears, "/") # name of subdirectory where downloaded data will be saved
@@ -95,15 +94,12 @@ setup_nhanes <- function(data_dir = NULL, yr = 2011){
 #' }
 #' @export
 get_nhanes_filenames <- function(setup, save_file_list = TRUE){
-    filenames_data <- nhanes_files[nhanes_files$wave == as.character(setup$wave), "data_link"]
+    filenames_data <-
+        rbind(
+            nhanes_files[nhanes_files$wave == as.character(setup$wave), "data_link"],
+            nhanes_files[nhanes_files$wave == "multiple", "data_link"]
+        )
     f_death <- .get_filenames(setup$death_url, select = paste0("NHANES_", setup$years))
-#     f_data <-  .get_filenames(setup$data_url, select = ".xpt$")
-#     if(save_file_list){
-#         f1 <- rbind(f_data, f_death)
-#         saveRDS(f1, paste0(setup$target_dir, "download_file_specs.rds"))
-#     }
-#     filenames_data <-
-#         paste0(setup$data_url, f_data$filename)
     filenames_death <-
         if(length(f_death) == 0) {
             NULL
