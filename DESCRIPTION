@@ -1,7 +1,7 @@
 Package: nhanes.tools
 Type: Package
 Title: Easily Download and Combine NHANES Files for Analysis
-Version: 0.11
+Version: 0.12
 Date: 2015-07-25
 Author: Mark Danese
 Maintainer: Mark Danese <mark@outins.com>
