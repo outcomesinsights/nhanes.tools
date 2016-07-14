@@ -327,7 +327,8 @@ get_nhanes_listing <- function(){
     table_text$key <- gsub(" Doc", "", table_text$doc_file)
     table_text$key <- tolower(table_text$key)
 
-    cell_urls <- rvest::html_nodes(tbl, "#PageContents_GridView1 a")
+    cell_urls <- rvest::html_nodes(tbl, ".text-left, .text-center")
+    cell_urls <- rvest::html_children(cell_urls)
     cell_urls <- rvest::html_attr(cell_urls, "href")
 
     documentation <- cell_urls[grepl("htm$", cell_urls)]
