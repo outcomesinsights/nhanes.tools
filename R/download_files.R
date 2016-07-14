@@ -184,12 +184,12 @@ get_nhanes_filenames <- function(setup, save_file_list = TRUE){
 #'
 #' Handles errors and warnings in the download process
 #' Source:  http://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r
-#' @param link
-#' @param dest
-#' @param times
-#' @param warn_msg
-#' @param err_msg
-#' @param fin_msg
+#' @param link Link to access
+#' @param dest Destination file location
+#' @param times Max number of times to try downloading
+#' @param warn_msg Warning message text
+#' @param err_msg Error message text
+#' @param fin_msg Message for when it finall works
 #' @param ... Used to pass options to download function (which wraps download.file())
 #' @export
 .try_download <- function(link, dest, times = 5, warn_msg = "There was a warning!", err_msg = "There was an error!", fin_msg = NULL, ...){
