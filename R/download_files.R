@@ -316,7 +316,8 @@ download_nhanes <- function(ftp_url, setup, ...){
 #' @return A dataframe with a list of all of the available NHANES files.
 #' @export
 get_nhanes_listing <- function(){
-    nhanes_url <- "http://wwwn.cdc.gov/Nchs/Nhanes/Search/DataPage.aspx"
+    cdc_url <- "http://wwwn.cdc.gov"
+    nhanes_url <- paste0(cdc_url, "/Nchs/Nhanes/Search/DataPage.aspx")
     tbl <- xml2::read_html(nhanes_url)
 
     table_text <- rvest::html_table(tbl)
@@ -330,6 +331,7 @@ get_nhanes_listing <- function(){
     cell_urls <- rvest::html_nodes(tbl, ".text-left, .text-center")
     cell_urls <- rvest::html_children(cell_urls)
     cell_urls <- rvest::html_attr(cell_urls, "href")
+    cell_urls <- paste0(cdc_url, cell_urls)
 
     documentation <- cell_urls[grepl("htm$", cell_urls)]
     documentation <- data.frame(doc_link = documentation, stringsAsFactors = FALSE)
@@ -349,6 +351,7 @@ get_nhanes_listing <- function(){
     nhanes_file$start_yr <- do.call(rbind, lapply(year_list, function(x) x[[1]]))
     nhanes_file$end_yr <- do.call(rbind, lapply(year_list, function(x) x[[2]]))
     nhanes_file$wave <- ifelse(as.numeric(nhanes_file$end_yr) - as.numeric(nhanes_file$start_yr) > 1, "multiple", nhanes_file$start_yr)
+    nhanes_file <- subset(nhanes_file, select = -c(x1, x2))
     return(nhanes_file)
 }
 
