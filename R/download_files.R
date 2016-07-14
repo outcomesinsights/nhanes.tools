@@ -46,7 +46,7 @@ setup_nhanes <- function(data_dir = NULL, yr = 2011){
     }
     if(!file.exists(data_dir)) stop("The data_dir you provided does not exist or the syntax is wrong.  On Unix/Mac you can use a slash at the end, but on Windows you cannot use the slash.")
     data_dir <- normalizePath(path.expand(data_dir), winslash = "/")
-    if(!yr %in% seq(1999, 2011, 2)) stop("first year must be an odd number from 1999 to 2011")
+    if(!yr %in% seq(1999, 2013, 2)) stop("first year must be an odd number from 1999 to 2013")
     death_url <- paste0("ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/datalinkage/linked_mortality/") # ftp location of death files
     diryears <- paste(yr, yr + 1, sep = "_")
     target_dir <- paste0(data_dir, "/nhanes_", diryears, "/") # name of subdirectory where downloaded data will be saved
