@@ -74,7 +74,8 @@ load_merge <- function(vec_of_files = "demo", yr, data_dir = "./data") {
         y <- load_nhanes(f, yr, data_dir)
         setkey(y, "SEQN")
         if(data.table::uniqueN(y) == nrow(y)){
-            dt <- merge(dt, y, all.x = TRUE, by = "SEQN")
+            byvars <- intersect(names(dt), names(y))
+            dt <- merge(dt, y, all.x = TRUE, by = byvars)
         } else {
             i <- i + 1
             dt_list[[i]] <- y
