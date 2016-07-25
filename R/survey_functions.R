@@ -26,7 +26,7 @@ output_table <- function(t, dig = 0) {
     x <- as.data.frame(
             formatC(x, format = "f", big.mark = ",", digits = dig)
         )
-    names(x) <- c("Total", "SE", "2.5%", "97.5%")
+    names(x) <- c("Estimate", "SE", "2.5%", "97.5%")
     return(x)
 }
 
