@@ -1,7 +1,7 @@
 Package: nhanes.tools
 Type: Package
 Title: Easily Download and Combine NHANES Files for Analysis
-Version: 0.12
+Version: 0.13
 Date: 2015-07-25
 Author: Mark Danese
 Maintainer: Mark Danese <mark@outins.com>
@@ -23,4 +23,4 @@ Imports:
     survey,
     rvest,
     xml2
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
