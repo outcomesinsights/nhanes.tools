@@ -68,8 +68,8 @@ load_merge <- function(vec_of_files = "demo", yr, data_dir = "./data") {
     vec_of_files <- unique(vec_of_files)
     dt <- load_nhanes("demo", yr, data_dir)
     data.table::setkey(dt, SEQN)
-    i <- 0
-    dt_list <- vector("list", 1)
+    dt_list <- vector("list", length(vec_of_files))
+    names(dt_list) <- vec_of_files
     for(f in vec_of_files){
         y <- load_nhanes(f, yr, data_dir)
         setkey(y, "SEQN")
@@ -77,12 +77,14 @@ load_merge <- function(vec_of_files = "demo", yr, data_dir = "./data") {
             byvars <- intersect(names(dt), names(y))
             dt <- merge(dt, y, all.x = TRUE, by = byvars)
         } else {
-            i <- i + 1
-            dt_list[[i]] <- y
+            dt_list[[f]] <- y
         }
     }
-    if(!all(unlist(lapply(dt_list, is.null)))) {
+    rem <- which(unlist(lapply(dt_list, is.null)))
+    dt_list[rem] <- NULL
+    if(!any(unlist(lapply(dt_list, is.null)))) {
         dt <- list(dt, dt_list)
+        names(dt) <- c("cohort", names(dt_list))
     }
     return(dt)
 }
