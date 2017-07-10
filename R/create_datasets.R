@@ -113,3 +113,40 @@ load_labs_merge <- function(vec_of_files = NULL, yr, data_dir = "./data") {
     dt1 <- dt1[J(unique(name)), mult = "first"] # get rid of multiple SEQN rows
     return(dt1)
 }
+
+#' Add drugs to main cohort dataset
+#'
+#' This takes an NHANES list object created with rxq_rx as a data input using the load_merge function, identify all drugs in a
+#' provided list of drugs with the relevant RXDDRGID in it, and add an indicator to the main data for each person who
+#' reported using that drug.  All variables from the drug file are imported for each drug.    There is no need for the NHANES list object
+#' after running this function.
+#'
+#' @param nhanes_data The NHANES list object returned from the load_merge function when rxq_rx data was requested
+#' @param drug_code_list A named list of drug codes (not vector).  Each drug or drug class in the list must contain at least one RXDDRGID.
+#'
+#' @return Returns a data.table with one row per person with all of the main (cohort) data, plus the drugs added.  The name used for the list
+#' will be appended to each column from the drug table to allow for distinction among drugs in the list.
+#' @import data.table
+#' @examples \dontrun{
+#' # Identify drugs from list_of_drugs from nhanes_1999 dataset created using load_merge()
+#' data_99 <- merge_drugs(nhanes_1999, list_of_drugs)
+#' }
+#' @export
+merge_drugs <- function(nhanes_data, drug_code_list){
+    if(any(unlist(lapply(drug_codes, is.null)))){
+        stop("All items in drug code list must have names")
+    }
+    if(!is.list(names(drug_code_list))){
+        stop("The drug code list must be a list, not a vector or other object")
+    }
+    if(!"rxq_rx" %in% names(nhanes_data)){
+        stop("None of the NHANES data list has a name of rxq_rx")
+    }
+    for(i in seq_along(drug_code_list)){
+        tmp <- merge(nhanes_data[["rxq_rx"]], drug_code_list[[i]], by = "RXDDRGID")
+        names(tmp) <- paste(names(tmp), names(drug_code_list)[[i]], sep = "_")
+        names(tmp) <- gsub("^SEQN_.*$", "SEQN", names(tmp))
+        nhanes_data[["cohort"]] <- merge(nhanes_data[["cohort"]], tmp, by = "SEQN", all.x = TRUE)
+    }
+    return(nhanes_data[["cohort"]])
+}
