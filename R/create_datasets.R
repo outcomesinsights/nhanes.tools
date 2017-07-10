@@ -83,8 +83,8 @@ load_merge <- function(vec_of_files = "demo", yr, data_dir = "./data") {
     rem <- which(unlist(lapply(dt_list, is.null)))
     dt_list[rem] <- NULL
     if(!any(unlist(lapply(dt_list, is.null)))) {
-        dt <- list(dt, dt_list)
-        names(dt) <- c("cohort", names(dt_list))
+        dt_list[["cohort"]] <- dt
+        dt <- dt_list
     }
     return(dt)
 }
