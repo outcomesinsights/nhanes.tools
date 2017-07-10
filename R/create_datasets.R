@@ -136,7 +136,7 @@ merge_drugs <- function(nhanes_data, drug_code_list){
     if(any(unlist(lapply(drug_codes, is.null)))){
         stop("All items in drug code list must have names")
     }
-    if(!is.list(names(drug_code_list))){
+    if(!is.list(drug_code_list)){
         stop("The drug code list must be a list, not a vector or other object")
     }
     if(!"rxq_rx" %in% names(nhanes_data)){
